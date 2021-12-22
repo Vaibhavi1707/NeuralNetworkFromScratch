@@ -57,7 +57,8 @@ class NeuralNetworkClassifier:
                     if i == y:
                         activation = self.layers[l - 1][2]
                         derivative = self.DERIVATIVE[activation](l) if activation == 'linear' else self.DERIVATIVE[activation](self.z[l][y]) 
-                        self.wts[i][j] -= self.alpha * self.act[l - 1][j] * derivative / float(self.act[l][y])
+                        scalers = self.alpha * self.act[l - 1][j] / float(self.act[l][y])
+                        self.wts[i][j] -= scalers * derivative 
 
     def fit_once(self, X, Y, alpha):
         self.alpha = alpha
@@ -76,3 +77,19 @@ class NeuralNetworkClassifier:
     ACTIVATION = {'relu': relu, 'softmax': softmax, 'linear': linear}
     DERIVATIVE = {'relu': derivative_relu, 'softmax': derivative_softmax, 
                   'linear': derivative_linear}
+    
+NUM_ROWS = 10000
+NUM_COLUMNS_X = 200 
+NUM_CLASSES = 5
+X = np.random.uniform(size=(NUM_ROWS,NUM_COLUMNS_X))
+y = np.random.randint(size=(NUM_ROWS,),low=0,high=NUM_CLASSES)
+
+model = NeuralNetworkClassifier([(NUM_COLUMNS_X, "relu"), (200, "relu"), (NUM_CLASSES, "softmax")])
+
+losses = [] 
+NUM_ITERS = 100
+for _ in range(NUM_ITERS):
+    yhat = model.predict(X, y)
+    loss = model.categorical_cross_entropy_loss(y, yhat)
+    losses.append(loss)
+    model.fit_once(X, y)
