@@ -103,7 +103,7 @@ class NeuralNetworkClassifier:
     def categorical_cross_entropy_loss(self, y, yhat):
         if max(y) + 1 != self.layers[-1][1]:
             raise Exception("The no. of neurons in the last layer should be the same as the no. of classes in Y"
-                            + "\nNo. of classes in Y " + str(max(Y) + 1)
+                            + "\nNo. of classes in Y " + str(max(y) + 1)
                             + "\nNo. of neurons in the last layer " + str(self.layers[-1][1])) 
         error = 0
         for i, y_label in enumerate(y):
