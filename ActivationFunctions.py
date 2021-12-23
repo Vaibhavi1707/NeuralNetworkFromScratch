@@ -12,7 +12,7 @@ def linear(x, m, c):
     return np.array([m * x[i] + c for i in range(len(x))])
 
 def derivative_relu(x):
-    return np.array([int(x[i] > 0) for i in range(len(x))])
+    return int(x > 0)
 
 def derivative_softmax(x):
     s = softmax(x)
